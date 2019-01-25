@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- $$DATE$$ : ven. 25 janvier 2019 (16:01:45)
+-- $$DATE$$ : ven. 25 janvier 2019 (20:02:20)
 
 local lfs = require"lfs"
 
@@ -16,17 +16,6 @@ function get_basenames( path)
   return basenames
 end
 
-function token_subst ( buffer)
-  for lang in pairs(dico) do
-    local tr=dico[lang]
-    for w in string.gmatch(buffer, "[^%s]+") do
-      w = tr[w] or w
-      print( w)
-    end
-  end
-
-end
-
 function read_template( path, file)
   local hf = io.open( path .. "/" .. file .. ".tpl","r")
   local buffer = hf:read( "*a")
@@ -34,8 +23,30 @@ function read_template( path, file)
   return buffer
 end
 
+function write_template( path, file, template)
+  lfs.mkdir( path)
+  local hf = io.open( path .. "/" .. file, "w")
+  hf:write( table.unpack( template))
+  hf:close()
+end
+
+function token_subst ( buffer)
+  for lang in pairs(dico) do
+    local tr=dico[lang]
+    local out={}
+    for w in string.gmatch(buffer, "[^%s]+") do
+      w = tr[w] or w
+      table.insert( out, w)
+    end
+    write_template( "final", tr["__outfile"], out)
+  end
+
+end
+
+
+
 function store_dictionary_language( path,file)
-  dico[file] = {}
+  dico[file] = { ["__outfile"] = file .. ".html" }
   local curr_key=nil
   local hf = io.open(path .. "/" .. file,"r")
   for l in hf:lines() do
