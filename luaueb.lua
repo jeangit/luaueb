@@ -1,7 +1,7 @@
 #!/usr/bin/env lua
 -- $$DATE$$ : ven. 25 janvier 2019 (16:01:45)
 
-require"lfs"
+local lfs = require"lfs"
 
 local dico = {}
 
@@ -29,7 +29,7 @@ end
 
 function read_template( path, file)
   local hf = io.open( path .. "/" .. file .. ".tpl","r")
-  local buffer = hf:read( "a")
+  local buffer = hf:read( "*a")
   hf:close()
   return buffer
 end
