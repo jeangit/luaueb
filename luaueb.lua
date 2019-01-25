@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- $$DATE$$ : ven. 25 janvier 2019 (10:16:27)
+-- $$DATE$$ : ven. 25 janvier 2019 (16:01:45)
 
 require"lfs"
 
@@ -14,6 +14,24 @@ function get_basenames( path)
     end
   end
   return basenames
+end
+
+function token_subst ( buffer)
+  for lang in pairs(dico) do
+    local tr=dico[lang]
+    for w in string.gmatch(buffer, "[^%s]+") do
+      w = tr[w] or w
+      print( w)
+    end
+  end
+
+end
+
+function read_template( path, file)
+  local hf = io.open( path .. "/" .. file .. ".tpl","r")
+  local buffer = hf:read( "a")
+  hf:close()
+  return buffer
 end
 
 function store_dictionary_language( path,file)
@@ -53,9 +71,11 @@ function main()
   local basenames= get_basenames( path)
   for _,bname in ipairs(basenames) do
     store_dictionary (path, bname)
+    local tpl = read_template( path, bname)
+    token_subst ( tpl)
   end
 
-  ---[[ test du dictionnaire
+  --[[ test du dictionnaire
   for i,v in pairs(dico["index.en"]) do
     print(i,v)
   end

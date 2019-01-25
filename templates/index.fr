@@ -1,7 +1,7 @@
 [intro]
 C'est un exemple de ce qu'on peut faire avec mon script de génération.
 
-[developpement]
+[développement]
 Ici on colle un pavé de texte, avec eventuellement quelques tags de mise en page.
 
 Quand le parser rencontre un saut de ligne, il considère qu'il faut fermer l'ancien paragraphe.
