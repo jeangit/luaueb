@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- $$DATE$$ : ven. 25 janvier 2019 (20:02:20)
+-- $$DATE$$ : sam. 26 janvier 2019 (16:34:44)
 
 local lfs = require"lfs"
 
@@ -16,6 +16,7 @@ function get_basenames( path)
   return basenames
 end
 
+
 function read_template( path, file)
   local hf = io.open( path .. "/" .. file .. ".tpl","r")
   local buffer = hf:read( "*a")
@@ -23,10 +24,12 @@ function read_template( path, file)
   return buffer
 end
 
+
 function write_template( path, file, template)
   lfs.mkdir( path)
   local hf = io.open( path .. "/" .. file, "w")
-  hf:write( table.unpack( template))
+  --hf:write( table.unpack( template))
+  hf:write( table.concat( template," "))
   hf:close()
 end
 
@@ -44,28 +47,28 @@ function token_subst ( buffer)
 end
 
 
-
 function store_dictionary_language( path,file)
   dico[file] = { ["__outfile"] = file .. ".html" }
   local curr_key=nil
   local hf = io.open(path .. "/" .. file,"r")
   for l in hf:lines() do
     if l == string.match(l,"%[.*%].*$") then
-      if curr_key~=nil then dico[file][curr_key]=dico[file][curr_key] .. "</p>" end
+      --if curr_key~=nil then dico[file][curr_key]=dico[file][curr_key] .. "</p>" end
       curr_key=l
-      dico[file][curr_key]="<p>"
+      dico[file][curr_key]=""
     elseif string.match(l,"^$") and curr_key then
-      dico[file][curr_key]=dico[file][curr_key] .. "</p><p>"
+      dico[file][curr_key]=dico[file][curr_key] .. "<br>"
     else
       dico[file][curr_key]=dico[file][curr_key] .. l
     end
   end
 
 
-  dico[file][curr_key]=dico[file][curr_key] .. "</p>"
+  --dico[file][curr_key]=dico[file][curr_key] .. "</p>"
   hf:close()
 
 end
+
 
 function store_dictionary( path, basename)
   local iter,dirobj = lfs.dir( path)

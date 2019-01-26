@@ -4,7 +4,10 @@ This is a sample of what can be done with my generation script.
 [développement]
 Here we have a bunch of text, maybe with some html tags.
 
-When the parser sees a line return, he knows he must close the previsou paragraph.
+When the parser sees a blank line, it inserts a &lt;BR&gt; tag.
 
 [conclusion]
 Was it good ?
+
+[mentions]
+Legal Mentions
