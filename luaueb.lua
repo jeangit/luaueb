@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- $$DATE$$ : dim. 27 janvier 2019 (14:50:46)
+-- $$DATE$$ : dim. 27 janvier 2019 (15:39:37)
 
 local lfs = require"lfs"
 
@@ -37,9 +37,11 @@ function token_subst ( buffer)
   for lang in pairs(dico) do
     local tr=dico[lang]
     local out={}
+    local html_links=string.gsub(lang,".*%.",".") .. ".html" -- extracting language
     for w in string.gmatch(buffer, "[^%s]+") do
-      local key=string.match(w, "%[[^%]]+%]") -- avons nous une entrée dans le dico ?
-      if key then w = string.gsub(w, "%[[^%]]+%]", tr[key]) end -- oui, remplacer le pattern
+      local key=string.match(w, "%[[^%]]+%]") -- do we have an entry in the dictonary ?
+      if key then w = string.gsub(w, "%[[^%]]+%]", tr[key]) end -- yes, replace the pattern
+      w = string.gsub(w, "%.tpl", html_links) -- replacing links template with current language
       table.insert( out, w)
     end
     write_template( "final", tr["__outfile"], out)
