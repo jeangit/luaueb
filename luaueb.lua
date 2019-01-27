@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- $$DATE$$ : sam. 26 janvier 2019 (16:34:44)
+-- $$DATE$$ : dim. 27 janvier 2019 (14:50:46)
 
 local lfs = require"lfs"
 
@@ -38,7 +38,8 @@ function token_subst ( buffer)
     local tr=dico[lang]
     local out={}
     for w in string.gmatch(buffer, "[^%s]+") do
-      w = tr[w] or w
+      local key=string.match(w, "%[[^%]]+%]") -- avons nous une entrée dans le dico ?
+      if key then w = string.gsub(w, "%[[^%]]+%]", tr[key]) end -- oui, remplacer le pattern
       table.insert( out, w)
     end
     write_template( "final", tr["__outfile"], out)
