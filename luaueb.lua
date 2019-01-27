@@ -1,5 +1,5 @@
 #!/usr/bin/env lua
--- $$DATE$$ : dim. 27 janvier 2019 (15:39:37)
+-- $$DATE$$ : dim. 27 janvier 2019 (15:53:54)
 
 local lfs = require"lfs"
 
@@ -83,6 +83,7 @@ function store_dictionary( path, basename)
   end
 end
 
+
 function main()
   local path="templates"
   local basenames= get_basenames( path)
@@ -91,12 +92,6 @@ function main()
     local tpl = read_template( path, bname)
     token_subst ( tpl)
   end
-
-  --[[ test du dictionnaire
-  for i,v in pairs(dico["index.en"]) do
-    print(i,v)
-  end
-  --]]
 
 end
 
